@@ -1,16 +1,20 @@
-import './App.css';
-import { createContext, useState } from 'react';
-import { Navbar, Container, Nav } from 'react-bootstrap';
-import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
-import Detail from './pages/Detail.js';
-import data from './data.js';
-import axios from 'axios';
+import "./App.css";
+import { createContext, useEffect, useState } from "react";
+import { Navbar, Container, Nav } from "react-bootstrap";
+import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
+import Detail from "./pages/Detail.js";
+import data from "./data.js";
+import axios from "axios";
+import Cart from "./pages/Cart.js";
 
 // context(state 보관함)를 하나 만들어주는 녀석
 export let Context1 = createContext();
 
-
 function App() {
+  useEffect(() => {
+    localStorage.setItem("watched", JSON.stringify([]));
+  });
+
   let [shoes, setSheos] = useState(data);
   let [leftover] = useState([10, 11, 12]);
 
@@ -24,8 +28,20 @@ function App() {
           <Nav className="me-auto">
             {/* <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/detail">Details</Nav.Link> */}
-            <Nav.Link onClick={() => { navigate('/')}}>Home</Nav.Link>
-            <Nav.Link onClick={() => { navigate('/detail')}}>Detail</Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              Home
+            </Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate("/cart");
+              }}
+            >
+              Cart
+            </Nav.Link>
           </Nav>
         </Container>
       </Navbar>
@@ -34,37 +50,43 @@ function App() {
       <Link to="/detail">상세페이지</Link>
 
       <Routes>
-        <Route path="/" element={
-          <>
-            <div className='main-bg'></div>
+        <Route
+          path="/"
+          element={
+            <>
+              <div className="main-bg"></div>
 
-            <div className="container">
-              <div className="row">
-                {
-                  shoes.map((a, i) => {
-                    return (
-                      <Card shoes={ a } i={ i + 1 }></Card>
-                    )
-                  })
-                }
-                
+              <div className="container">
+                <div className="row">
+                  {shoes.map((a, i) => {
+                    return <Card shoes={a} i={i + 1}></Card>;
+                  })}
+                </div>
               </div>
-            </div>
-            <button onClick={() => {
-              axios.get('https://codingapple1.github.io/shop/data3.json')
-              .then((res) => {
-                let copy = [...shoes, ...res.data];
-                setSheos(copy);
-              })
-            }}>더보기</button>
-          </>
-        } />
+              <button
+                onClick={() => {
+                  axios
+                    .get("https://codingapple1.github.io/shop/data3.json")
+                    .then((res) => {
+                      let copy = [...shoes, ...res.data];
+                      setSheos(copy);
+                    });
+                }}
+              >
+                더보기
+              </button>
+            </>
+          }
+        />
 
-        <Route path="/detail/:id" element={
-          <Context1.Provider value={{ leftover }}>
-            <Detail shoes={shoes} />
-          </Context1.Provider>
-        } />
+        <Route
+          path="/detail/:id"
+          element={
+            <Context1.Provider value={{ leftover }}>
+              <Detail shoes={shoes} />
+            </Context1.Provider>
+          }
+        />
 
         <Route path="/about" element={<About />}>
           <Route path="member" element={<div>멤버임</div>} />
@@ -72,6 +94,8 @@ function App() {
         </Route>
 
         <Route path="*" element={<div>없는 페이지</div>} />
+
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </div>
   );
@@ -80,11 +104,14 @@ function App() {
 function Card(props) {
   return (
     <div className="col-md-4">
-      <img src={"https://codingapple1.github.io/shop/shoes" + props.i + ".jpg"} width="80%" />
-      <h5>{ props.shoes.title }</h5>
-      <p>{ props.shoes.price }</p>
+      <img
+        src={"https://codingapple1.github.io/shop/shoes" + props.i + ".jpg"}
+        width="80%"
+      />
+      <h5>{props.shoes.title}</h5>
+      <p>{props.shoes.price}</p>
     </div>
-  )
+  );
 }
 
 function About(props) {
@@ -93,7 +120,7 @@ function About(props) {
       <h4>회사정보임</h4>
       <Outlet></Outlet>
     </div>
-  )
+  );
 }
 
 export default App;
