@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { changeAge } from "./../store/userSlice.js";
 import { changeCount } from "./../store.js";
 
 function Cart() {

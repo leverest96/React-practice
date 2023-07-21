@@ -1,13 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Nav } from "react-bootstrap";
-import { Context1 } from "./../App.js";
 import { useDispatch } from "react-redux";
 import { addItem } from "./../store.js";
 
 function Detail(props) {
-  let { leftover } = useContext(Context1);
-
   let { id } = useParams();
 
   let product = props.shoes.find(function (x) {
@@ -42,7 +39,6 @@ function Detail(props) {
       {alert == true ? (
         <div className="alert alert-warning">2초 이내 구매시 할인</div>
       ) : null}
-      {leftover}
       <div className="row">
         <div className="col-md-6">
           <img
@@ -109,7 +105,6 @@ function Detail(props) {
 
 function TabContent({ tab }) {
   let [fade, setFade] = useState("");
-  let { leftover } = useContext(Context1);
 
   useEffect(() => {
     setTimeout(() => {
@@ -123,11 +118,7 @@ function TabContent({ tab }) {
 
   return (
     <div className={"start " + fade}>
-      {
-        [<div>{leftover}</div>, <div>{leftover}</div>, <div>{leftover}</div>][
-          tab
-        ]
-      }
+      {[<div>내용1</div>, <div>내용2</div>, <div>내용3</div>][tab]}
     </div>
   );
 }
