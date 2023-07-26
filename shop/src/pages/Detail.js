@@ -60,7 +60,7 @@ function Detail(props) {
               dispatch(addItem({ id: 1, name: "Red Knit", count: 0 }));
             }}
           >
-            주문하기
+            주문하기 go
           </button>
         </div>
       </div>
